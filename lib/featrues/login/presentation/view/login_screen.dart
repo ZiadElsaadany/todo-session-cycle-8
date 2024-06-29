@@ -32,6 +32,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
   }
 
+
+
+
+
+  TextEditingController nameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
 
@@ -120,6 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   Text("Your Name"),
                   TextFormField(
+                    controller:nameController ,
                     decoration: InputDecoration(
                       enabledBorder:InputBorder.none,
                       focusedBorder: InputBorder.none,
@@ -132,9 +138,16 @@ class _LoginScreenState extends State<LoginScreen> {
             MaterialButton(
               color:Color(0xff87B5E3) ,
               onPressed: ( ) {
-                Navigator.push(context, MaterialPageRoute(builder: (c) {
-                  return HomeScreen();
-                }));
+               if(image== null ) {
+                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Error")));
+               }else{
+                 Navigator.push(context, MaterialPageRoute(builder: (c) {
+                   return HomeScreen(
+                     name:nameController.text ,
+                     photo:File(image!.path) ,
+                   );
+                 }));
+               }
               } ,child: Text("Get Started"),)
 
 
