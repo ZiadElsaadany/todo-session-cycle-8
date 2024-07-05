@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_cycle_8_session/core/utils/colors.dart';
 import 'package:todo_cycle_8_session/core/utils/images.dart';
+import 'package:todo_cycle_8_session/featrues/add_note/presentation/view/add_note_screen.dart';
 import 'package:todo_cycle_8_session/featrues/home/presentation/view/widgets/appbar.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -23,7 +24,24 @@ class HomeScreen extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30)
           ),
-          onPressed: ( ){ },
+          onPressed: ( ){
+
+            // showModalBottomSheet(context: context, builder: (c) {
+            //   return Text("zzz") ;
+            // });
+
+
+
+            Navigator.push(context, MaterialPageRoute(builder: (c) {
+              return  AddNoteScreen();
+            } ));
+
+
+
+
+
+
+          },
           child: Icon(Icons.add),
         ),
 
