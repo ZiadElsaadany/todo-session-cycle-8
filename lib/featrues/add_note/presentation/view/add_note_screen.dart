@@ -10,7 +10,6 @@ class AddNoteScreen extends StatelessWidget {
     return  Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        leading: const Icon(Icons.abc),
         title: const Text("Add Task"),
       ),
       body: AddNoteBody(),

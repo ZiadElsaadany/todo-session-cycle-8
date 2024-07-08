@@ -14,7 +14,7 @@ class CustomTextField extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Colors.yellow,
         borderRadius: BorderRadius.circular(15),
 
       ),
@@ -31,8 +31,8 @@ class CustomTextField extends StatelessWidget {
           ),
           TextFormField(
             controller: controller,
-            minLines: minLine,
-maxLines: mxLine,
+            minLines: minLine, // 1
+maxLines: mxLine,   // 1
 
 decoration: InputDecoration(
    hintStyle: const TextStyle(

@@ -5,14 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:todo_cycle_8_session/core/utils/colors.dart';
 import 'package:todo_cycle_8_session/core/utils/images.dart';
 import 'package:todo_cycle_8_session/featrues/add_note/presentation/view/add_note_screen.dart';
+import 'package:todo_cycle_8_session/featrues/home/data/models/note_model.dart';
 import 'package:todo_cycle_8_session/featrues/home/presentation/view/widgets/appbar.dart';
+import 'package:todo_cycle_8_session/featrues/home/presentation/view/widgets/drawer_widge.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.name, required this.photo});
 
   final String name ;
   final File photo;
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return  SafeArea(
@@ -45,21 +52,20 @@ class HomeScreen extends StatelessWidget {
           child: Icon(Icons.add),
         ),
 
+
         drawer: Drawer(
-          child: Column
-            (
-            children: [
-              Text("ziad")
-            ],
-          ),
+          child: CustomDrawer(),
         ),
         body: Column(
           children: [
-          CustomAppBar(name: name, photo: photo),
+          CustomAppBar(name: widget.name, photo: widget.photo),
           Expanded(
-            child: ListView.builder(
+            child:  notes.isEmpty?
 
-                 itemCount: 10,
+                Center(child: Text("No Notes, Please Add Task"))
+                :      ListView.builder(
+
+                 itemCount: notes.length,
                 itemBuilder: (c,index) {
               return  Dismissible(
                 background: Container(
@@ -68,10 +74,28 @@ class HomeScreen extends StatelessWidget {
                 ),
                 key: GlobalKey(),
                 child: ListTile(
-                  trailing: Icon(Icons.add_a_photo    ),
+                  trailing: GestureDetector(
+                    onTap: ( ) {
+
+                      setState(() {
+                        notes[index].doneOrNot = !notes[index].doneOrNot;
+                      });
+
+                      // false - -> true
+                    },
+                    child: Container(
+
+                      padding: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                        color: notes[index].doneOrNot ? AppColors.mainColor:Colors.white,
+                          border: Border.all(color:AppColors.mainColor ),
+                          borderRadius: BorderRadius.circular(10)
+                        ),
+                        child: Text("done")),
+                  ),
                   leading: Icon(Icons.add),
-                  title: Text("Studying Flutter"),
-                  subtitle: Text("02:00 pm"),
+                  title: Text(notes[index].title),
+                  subtitle: Text(notes[index].time),
 
                 ),
               );
