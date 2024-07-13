@@ -62,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Expanded(
             child:  notes.isEmpty?
 
-                Center(child: Text("No Notes, Please Add Task"))
+                Center(child: Text("No Notes Yet!"))
                 :      ListView.builder(
 
                  itemCount: notes.length,
