@@ -164,6 +164,10 @@ time!.format(context),
 
         );
 
+
+        Navigator.pop(context);
+
+
       } else{
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Fill data")));
       }

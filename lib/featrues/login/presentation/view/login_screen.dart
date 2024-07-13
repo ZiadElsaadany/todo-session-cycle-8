@@ -19,6 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
    XFile? image;
 
   pickPhoto( ImageSource imageSource)   async {
+
     image = await picker.pickImage(source: imageSource);
     if(image!=null ) {
       Navigator.pop(context);

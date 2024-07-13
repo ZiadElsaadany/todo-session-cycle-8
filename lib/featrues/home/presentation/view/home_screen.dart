@@ -6,6 +6,7 @@ import 'package:todo_cycle_8_session/core/utils/colors.dart';
 import 'package:todo_cycle_8_session/core/utils/images.dart';
 import 'package:todo_cycle_8_session/featrues/add_note/presentation/view/add_note_screen.dart';
 import 'package:todo_cycle_8_session/featrues/home/data/models/note_model.dart';
+import 'package:todo_cycle_8_session/featrues/home/presentation/view/task_details.dart';
 import 'package:todo_cycle_8_session/featrues/home/presentation/view/widgets/appbar.dart';
 import 'package:todo_cycle_8_session/featrues/home/presentation/view/widgets/drawer_widge.dart';
 
@@ -22,6 +23,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+
+    List<NoteModel>   unArchiveNotes = notes.where((element) =>element.archiveOrNot==false).toList();
     return  SafeArea(
       child: Scaffold(
         floatingActionButtonLocation:     FloatingActionButtonLocation.centerFloat,
@@ -41,7 +44,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
             Navigator.push(context, MaterialPageRoute(builder: (c) {
               return  AddNoteScreen();
-            } ));
+            } )).then((value)  {
+              setState(() {});
+            });
 
 
 
@@ -60,12 +65,13 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
           CustomAppBar(name: widget.name, photo: widget.photo),
           Expanded(
-            child:  notes.isEmpty?
+            child:  unArchiveNotes.isEmpty?
 
-                Center(child: Text("No Notes Yet!"))
+
+                const Center(child: Text("No Notes Yet!"))
                 :      ListView.builder(
 
-                 itemCount: notes.length,
+                 itemCount: unArchiveNotes.length,
                 itemBuilder: (c,index) {
               return  Dismissible(
                 background: Container(
@@ -74,11 +80,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 key: GlobalKey(),
                 child: ListTile(
+                  onTap: ( ) {
+                    Navigator.push(context, MaterialPageRoute(builder: (C) {
+                      return TaskDetails( noteModel: unArchiveNotes[index] ,);
+                    } )).then((value) =>setState(() {
+
+                    }));
+                  },
                   trailing: GestureDetector(
                     onTap: ( ) {
 
                       setState(() {
-                        notes[index].doneOrNot = !notes[index].doneOrNot;
+                        unArchiveNotes[index].doneOrNot = !unArchiveNotes[index].doneOrNot;
                       });
 
                       // false - -> true
@@ -87,15 +100,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
                       padding: const EdgeInsets.all(5),
                         decoration: BoxDecoration(
-                        color: notes[index].doneOrNot ? AppColors.mainColor:Colors.white,
+                        color: unArchiveNotes[index].doneOrNot ? AppColors.mainColor:Colors.white,
                           border: Border.all(color:AppColors.mainColor ),
                           borderRadius: BorderRadius.circular(10)
                         ),
                         child: Text("done")),
                   ),
                   leading: Icon(Icons.add),
-                  title: Text(notes[index].title),
-                  subtitle: Text(notes[index].time),
+                  title: Text(unArchiveNotes[index].title),
+                  subtitle: Text(unArchiveNotes[index].time),
 
                 ),
               );
@@ -108,3 +121,5 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
+
