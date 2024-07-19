@@ -1,25 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_cycle_8_session/core/utils/images.dart';
+import 'package:todo_cycle_8_session/featrues/login/presentation/controller/theme_controller.dart';
 import 'package:todo_cycle_8_session/featrues/login/presentation/view/login_screen.dart';
 
-class OnboardingBody extends StatelessWidget {
+import '../../../../../core/utils/theme.dart';
+
+class OnboardingBody extends StatefulWidget {
   const OnboardingBody({super.key});
 
   @override
+  State<OnboardingBody> createState() => _OnboardingBodyState();
+}
+
+class _OnboardingBodyState extends State<OnboardingBody> {
+
+  // bool switchValue = false;
+  @override
   Widget build(BuildContext context) {
-    return  Padding(
+    return   Padding(
       padding: const EdgeInsets.symmetric(
           horizontal: 22.0),
       child: Column(
-        children: [
+        children: [ Switch(value:   Provider.of<ThemeProvider>(context).switchValue, onChanged: ( b){
+
+
+          Provider.of<ThemeProvider>(context,listen: false).changeSwitchValue(b);
+
+
+
+
+          }),
           Image.asset(AppImages.onboardingImage),
        Text('''ToDo List
   Daily Task''',
        textAlign: TextAlign.center,
-      style: TextStyle(
-        fontWeight: FontWeight.bold,
-
-      ),
+      style: Theme.of(context).textTheme.titleLarge,
        ),   SizedBox(
             height: 21,
           ),
