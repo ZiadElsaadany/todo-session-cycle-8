@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_cycle_8_session/featrues/home/data/models/note_model.dart';
 
 import '../../../../core/utils/colors.dart';
+import '../controller/home_controller.dart';
 
 class TaskDetails extends StatefulWidget {
   const TaskDetails({super.key, required this.noteModel});
@@ -35,18 +37,9 @@ class _TaskDetailsState extends State<TaskDetails> {
               color: AppColors.mainColor,
               onPressed: ( ) {
 
+Provider.of<HomeProvider>(context,listen: false).updateArchive(Provider.of<HomeProvider>(context).notes.indexOf(widget.noteModel));
 
-                // notes
-
-                 // notes[0]
-               notes[notes.indexOf(widget.noteModel)].archiveOrNot =  !notes[notes.indexOf(widget.noteModel)].archiveOrNot;
-
-               setState(() {
-
-               });
-
-
-              },child: Text(   notes[notes.indexOf(widget.noteModel)].archiveOrNot ?   "UnArchive":"Archive"),),
+              },child: Text(   Provider.of<HomeProvider>(context).notes[Provider.of<HomeProvider>(context).notes.indexOf(widget.noteModel)].archiveOrNot ?   "UnArchive":"Archive"),),
             MaterialButton(
               color: AppColors.mainColor,
 
@@ -67,7 +60,7 @@ class _TaskDetailsState extends State<TaskDetails> {
                            ),
                            Expanded(
                              child: MaterialButton(onPressed: ( ) {
-                             notes.removeAt(notes.indexOf(widget.noteModel));
+                               Provider.of<HomeProvider>(context).notes.removeAt(Provider.of<HomeProvider>(context).notes.indexOf(widget.noteModel));
                              Navigator.pop(context);
                              Navigator.pop(context);
 

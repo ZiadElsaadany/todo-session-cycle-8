@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_cycle_8_session/core/utils/colors.dart';
 import 'package:todo_cycle_8_session/core/utils/images.dart';
 import 'package:todo_cycle_8_session/featrues/add_note/presentation/view/add_note_screen.dart';
@@ -9,6 +10,8 @@ import 'package:todo_cycle_8_session/featrues/home/data/models/note_model.dart';
 import 'package:todo_cycle_8_session/featrues/home/presentation/view/task_details.dart';
 import 'package:todo_cycle_8_session/featrues/home/presentation/view/widgets/appbar.dart';
 import 'package:todo_cycle_8_session/featrues/home/presentation/view/widgets/drawer_widge.dart';
+
+import '../controller/home_controller.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.name, required this.photo});
@@ -24,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
 
-    List<NoteModel>   unArchiveNotes = notes.where((element) =>element.archiveOrNot==false).toList();
+    List<NoteModel>   unArchiveNotes =Provider.of<HomeProvider>(context).notes.where((element) =>element.archiveOrNot==false).toList();
     return  SafeArea(
       child: Scaffold(
         floatingActionButtonLocation:     FloatingActionButtonLocation.centerFloat,
@@ -44,13 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
             Navigator.push(context, MaterialPageRoute(builder: (c) {
               return  AddNoteScreen();
-            } )).then((value)  {
-              setState(() {});
-            });
-
-
-
-
+            } ));
 
 
           },

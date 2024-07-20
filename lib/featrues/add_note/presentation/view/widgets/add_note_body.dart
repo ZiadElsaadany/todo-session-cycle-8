@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_cycle_8_session/core/shared_widgets/custom_button.dart';
 import 'package:todo_cycle_8_session/core/shared_widgets/custom_field.dart';
 import 'package:todo_cycle_8_session/core/utils/colors.dart';
 import 'package:todo_cycle_8_session/featrues/home/data/models/note_model.dart';
+import 'package:todo_cycle_8_session/featrues/home/presentation/controller/home_controller.dart';
 
 class AddNoteBody extends StatefulWidget {
   const AddNoteBody({super.key});
@@ -17,23 +19,7 @@ class _AddNoteBodyState extends State<AddNoteBody> {
   TextEditingController descController  =TextEditingController();
   DateTime datTimeNow = DateTime.now();
 
-  DateTime? startDate = DateTime.now();  //
-  DateTime?  endDate = DateTime.now(); //
-  TimeOfDay?  time ;
 
-  String convertDateString ( DateTime date ) {
-    //2024-07-27 54df45d5d4
-    // [ 2024-07-27   ,   54df45d5d4 ]
-
-    return date.toString().split(" ")[0]  ;
-
-  }
-
-  String convertTime(TimeOfDay time ) {
-
-    return  "${time.hour}:${time.minute} ${time.period.name}";
-
-  }
 
 
   @override
@@ -63,8 +49,8 @@ class _AddNoteBodyState extends State<AddNoteBody> {
 
 
           title: Text("Start Date"),subtitle: Text(
-          startDate == null? "Enter A Date":
-        convertDateString(startDate!),
+          Provider.of<HomeProvider>(context, listen: false).startDate== null? "Enter A Date":
+        Provider.of<HomeProvider>(context,listen: false).convertDateString(Provider.of<HomeProvider>(context).startDate!),
         style: TextStyle(
           color: Colors.grey
         ),
@@ -72,21 +58,12 @@ class _AddNoteBodyState extends State<AddNoteBody> {
           trailing: IconButton(
             onPressed: ( ) async{
 
-              startDate =await  showDatePicker(context: context, firstDate:datTimeNow, lastDate: datTimeNow.add(const Duration(
-                days: 365,
 
 
 
-              )),
-
-              );
-              setState(() {
-
-              });
-
-              print("start date ----> "+startDate.toString());
 
 
+Provider.of<HomeProvider>(context,listen: false).selectStartDate(context);
             } ,
             icon: Icon(Icons.arrow_circle_down_outlined),
           ),
@@ -100,22 +77,16 @@ class _AddNoteBodyState extends State<AddNoteBody> {
             tileColor: Colors.white,
           title: Text("End Date"),subtitle: Text(
 
-          endDate == null? "Enter A Date":
-          convertDateString(endDate!),
+          Provider.of<HomeProvider>(context).endDate== null? "Enter A Date":
+          Provider.of<HomeProvider>(context,listen: false).convertDateString(Provider.of<HomeProvider>(context).endDate!),
           style: TextStyle(
               color: Colors.grey
           ),
         )       ,
           trailing: IconButton(
             onPressed: ( )  async {
-              endDate =await  showDatePicker(context: context, firstDate:datTimeNow, lastDate: datTimeNow.add(const Duration(
-                days: 365,
+              Provider.of<HomeProvider>(context,listen: false).selectEndDate(context);
 
-              )),
-              );
-              setState(() {
-
-              });
             } ,
             icon: Icon(Icons.arrow_circle_down_outlined),
           ),
@@ -126,18 +97,16 @@ class _AddNoteBodyState extends State<AddNoteBody> {
         ListTile(
           tileColor: Colors.white,
           title: Text("Add Time"),subtitle: Text(
-time == null ? "Add Time":
-time!.format(context),
+Provider.of<HomeProvider>(context).time == null ? "Add Time":
+Provider.of<HomeProvider>(context).time!.format(context),
           style: TextStyle(
               color: Colors.grey
           ),
         )       ,
           trailing: IconButton(
             onPressed: ( )  async{
-              time  =    await    showTimePicker(context: context, initialTime: TimeOfDay.now());
 
-      setState(() {
-      });
+Provider.of<HomeProvider>(context,listen: false).selectTime(context);
 
 
             } ,
@@ -153,24 +122,17 @@ time!.format(context),
         onPressed: ( ) {
 
 
-      if(time!=null && startDate!=null &&endDate!=null && nameController.text.isNotEmpty && descController.text.isNotEmpty){
-        notes.add(
-            NoteModel(
-                time: time!.format(context).toString(),
-                startDate: convertDateString(startDate!),
-                endDate: convertDateString(endDate!),
-                title: nameController.text, desc: descController.text
-            )
 
+        Provider.of<HomeProvider>(context, listen: false).addNote(
+
+        desc: descController.text ,
+          title: nameController.text,
+          context: context
         );
 
 
-        Navigator.pop(context);
 
 
-      } else{
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Fill data")));
-      }
 
 
 

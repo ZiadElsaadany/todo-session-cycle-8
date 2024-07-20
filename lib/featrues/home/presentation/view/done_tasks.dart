@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../core/utils/colors.dart';
 import '../../data/models/note_model.dart';
+import '../controller/home_controller.dart';
 
 class DoneTasks extends StatefulWidget {
   const DoneTasks({super.key});
@@ -11,11 +13,12 @@ class DoneTasks extends StatefulWidget {
 }
 
 class _DoneTasksState extends State<DoneTasks> {
-  List<NoteModel> doneList =
-      notes.where((element) => element.doneOrNot == true).toList();
+
 
   @override
   Widget build(BuildContext context) {
+    List<NoteModel> doneList =
+    Provider.of<HomeProvider>(context).notes.where((element) => element.doneOrNot == true).toList();
     return Scaffold(
       appBar: AppBar(
         title: Text("Done Tasks"),
