@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_cycle_8_session/core/utils/colors.dart';
 import 'package:todo_cycle_8_session/core/utils/images.dart';
+import 'package:todo_cycle_8_session/core/utils/my_hive.dart';
 import 'package:todo_cycle_8_session/featrues/add_note/presentation/view/add_note_screen.dart';
 import 'package:todo_cycle_8_session/featrues/home/data/models/note_model.dart';
 import 'package:todo_cycle_8_session/featrues/home/presentation/view/task_details.dart';
@@ -26,8 +28,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-
-    List<NoteModel>   unArchiveNotes =Provider.of<HomeProvider>(context).notes.where((element) =>element.archiveOrNot==false).toList();
+    List<NoteModel> notes= context.watch<HomeProvider>().notes;
     return  SafeArea(
       child: Scaffold(
         floatingActionButtonLocation:     FloatingActionButtonLocation.centerFloat,
@@ -62,13 +63,13 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
           CustomAppBar(name: widget.name, photo: widget.photo),
           Expanded(
-            child:  unArchiveNotes.isEmpty?
+            child:  notes.isEmpty?
 
 
                 const Center(child: Text("No Notes Yet!"))
                 :      ListView.builder(
 
-                 itemCount: unArchiveNotes.length,
+                 itemCount: notes.length,
                 itemBuilder: (c,index) {
               return  Dismissible(
                 background: Container(
@@ -79,33 +80,29 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: ListTile(
                   onTap: ( ) {
                     Navigator.push(context, MaterialPageRoute(builder: (C) {
-                      return TaskDetails( noteModel: unArchiveNotes[index] ,);
+                      return TaskDetails( noteModel: notes[index] ,);
                     } )).then((value) =>setState(() {
 
                     }));
                   },
                   trailing: GestureDetector(
                     onTap: ( ) {
-
-                      setState(() {
-                        unArchiveNotes[index].doneOrNot = !unArchiveNotes[index].doneOrNot;
-                      });
-
+                               context.read<HomeProvider>().updateDone(index);
                       // false - -> true
                     },
                     child: Container(
 
                       padding: const EdgeInsets.all(5),
                         decoration: BoxDecoration(
-                        color: unArchiveNotes[index].doneOrNot ? AppColors.mainColor:Colors.white,
+                        color: notes[index].doneOrNot ? AppColors.mainColor:Colors.white,
                           border: Border.all(color:AppColors.mainColor ),
                           borderRadius: BorderRadius.circular(10)
                         ),
                         child: Text("done")),
                   ),
                   leading: Icon(Icons.add),
-                  title: Text(unArchiveNotes[index].title),
-                  subtitle: Text(unArchiveNotes[index].time),
+                  title: Text(notes[index].title),
+                  subtitle: Text(notes[index].time),
 
                 ),
               );

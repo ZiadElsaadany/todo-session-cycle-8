@@ -10,6 +10,10 @@ class ThemeProvider  with ChangeNotifier{
   bool  switchValue  =false;
 
 
+  // switchValue  = false;
+  // switchValue = true
+
+
 
 
   setSwitchValueFromHive( ) {

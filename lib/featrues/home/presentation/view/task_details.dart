@@ -37,10 +37,11 @@ class _TaskDetailsState extends State<TaskDetails> {
               color: AppColors.mainColor,
               onPressed: ( ) {
 
-Provider.of<HomeProvider>(context,listen: false).updateArchive(Provider.of<HomeProvider>(context).notes.indexOf(widget.noteModel));
+Provider.of<HomeProvider>(context,listen: false).updateArchive(Provider.of<HomeProvider>(context,listen: false).notes.indexOf(widget.noteModel));
 
               },child: Text(   Provider.of<HomeProvider>(context).notes[Provider.of<HomeProvider>(context).notes.indexOf(widget.noteModel)].archiveOrNot ?   "UnArchive":"Archive"),),
             MaterialButton(
+
               color: AppColors.mainColor,
 
               onPressed: ( ) {
@@ -49,6 +50,7 @@ Provider.of<HomeProvider>(context,listen: false).updateArchive(Provider.of<HomeP
                   return AlertDialog(
 
                    title: Column(
+
                      children: [
                        Text(" Are you sure you want to delete\nthis task?  "),
                        Row(
